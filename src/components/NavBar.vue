@@ -1,11 +1,9 @@
 <template>
   <div>
     <v-app-bar app>
-      <v-toolbar-title class="title mr-6"
-        ><v-btn retain-focus-on-click x-large to="/" text
-          >M&F</v-btn
-        ></v-toolbar-title
-      >
+      <!-- <v-toolbar-title class="title mr-6"> -->
+      <v-btn x-large to="/" text>M&F</v-btn>
+      <!-- </v-toolbar-title> -->
       <v-autocomplete
         v-model="select"
         :loading="loading"
@@ -13,7 +11,7 @@
         :search-input.sync="search"
         item-text="name"
         cache-items
-        class="mx-4"
+        class="mx-4 flex-grow-1"
         flat
         hide-no-data
         hide-details
@@ -22,6 +20,13 @@
         solo
         v-if="this.$store.getters.isAuthenticated"
       ></v-autocomplete>
+      <v-tabs align-with-title class="flex-grow-0">
+        <v-tab
+          v-for="routes in this.$store.state.links"
+          v-bind:key="routes.id"
+          :to="`${routes.page}`"
+        >{{routes.text}}</v-tab>
+      </v-tabs>
     </v-app-bar>
   </div>
 </template>

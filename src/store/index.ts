@@ -16,8 +16,12 @@ export default new Vuex.Store({
     },
     error: null,
     status: null,
-    links: ['Document Generator', 'Matter Tracker'],
-    isAuthenticated: false
+    links: [
+      { id: 0, text: 'Home', page: '/' },
+      { id: 1, text: 'About', page: '/about' },
+      { id: 2, text: 'Login', page: '/login' }
+    ],
+    isAuthenticated: true
   },
   getters: {
     documents(state) {

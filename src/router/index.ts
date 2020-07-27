@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import Home from '@/views/Home.vue'
 import Generator from '@/views/Generator.vue'
 import LoginView from '@/views/LoginView.vue'
+import About from '@/views/About.vue'
 import store from '../store'
 
 Vue.use(VueRouter)
@@ -18,7 +19,8 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/about',
-    name: 'About'
+    name: 'About',
+    component: About
   },
   {
     path: '/docgen/:id',
