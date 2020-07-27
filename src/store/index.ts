@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import firebase from 'firebase/app'
-import { db, storage } from '@/firebaseInit'
+import { db, storage, auth } from '@/firebaseInit'
 
 Vue.use(Vuex)
 
@@ -21,6 +21,12 @@ export default new Vuex.Store({
       { id: 1, text: 'About', page: '/about' },
       { id: 2, text: 'Login', page: '/login' }
     ],
+    user: null,
+    schema: {
+      type: 'object',
+      required: [],
+      properties: {}
+    },
     isAuthenticated: true
   },
   getters: {
@@ -37,7 +43,13 @@ export default new Vuex.Store({
       return state.document.url
     },
     isAuthenticated(state) {
-      return state.isAuthenticated
+      return !(state.user === null)
+    },
+    schema(state) {
+      return state.schema
+    },
+    fields(state) {
+      return state.schema.properties
     }
   },
   mutations: {
@@ -58,6 +70,15 @@ export default new Vuex.Store({
     },
     setStatus(state, payload) {
       state.status = payload
+    },
+    setSchema(state, payload) {
+      state.schema = payload
+    },
+    setFieldType(state, payload) {
+      state.schema.properties = payload
+    },
+    setUser(state, payload) {
+      state.user = payload
     }
   },
   actions: {
@@ -81,6 +102,12 @@ export default new Vuex.Store({
     },
     setDocumentFields({ commit }, payload) {
       commit('setDocumentFields', payload)
+    },
+    setSchema({ commit }, payload) {
+      commit('setSchema', payload)
+    },
+    loginUser({ commit }, payload) {
+      commit('setUser', payload)
     }
   },
   modules: {}

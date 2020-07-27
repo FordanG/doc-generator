@@ -5,6 +5,7 @@ import Generator from '@/views/Generator.vue'
 import LoginView from '@/views/LoginView.vue'
 import About from '@/views/About.vue'
 import store from '../store'
+import CreateForm from '@/views/CreateForm.vue'
 
 Vue.use(VueRouter)
 
@@ -31,6 +32,11 @@ const routes: Array<RouteConfig> = [
     path: '/login',
     name: 'LoginView',
     component: LoginView
+  },
+  {
+    path: '/form',
+    name: 'CreateForm',
+    component: CreateForm
   }
 ]
 

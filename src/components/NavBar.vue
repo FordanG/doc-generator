@@ -1,9 +1,9 @@
 <template>
   <div>
     <v-app-bar app>
-      <!-- <v-toolbar-title class="title mr-6"> -->
-      <v-btn x-large to="/" text>M&F</v-btn>
-      <!-- </v-toolbar-title> -->
+      <v-toolbar-title class="title mr-6"
+        ><v-btn x-large to="/" text>M&F</v-btn></v-toolbar-title
+      >
       <v-autocomplete
         v-model="select"
         :loading="loading"

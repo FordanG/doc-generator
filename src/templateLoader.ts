@@ -4,8 +4,9 @@ import PizZipUtils from 'pizzip/utils/index.js'
 import InspectModule from 'docxtemplater/js/inspect-module.js'
 import { saveAs } from 'file-saver'
 import expressions from 'angular-expressions'
-import merge from 'lodash/merge'
 import { storage } from '@/firebaseInit'
+import _ from 'lodash'
+import pluralize from 'pluralize'
 
 expressions.filters.lower = (input: string) => {
   if (!input) {
@@ -34,7 +35,7 @@ export function angularParser(tag: string) {
       const scopeList = context['scopeList']
       const num = context['num']
       for (let i = 0, len = num + 1; i < len; i++) {
-        obj = merge(obj, scopeList[i])
+        obj = _.merge(obj, scopeList[i])
       }
       return expr(scope, obj)
     }
@@ -55,10 +56,49 @@ export function loadFile(
   })
 }
 
-export function generateSchema(tags: object) {
+export function generateSchema(tags: Record<string, any>) {
+  const properties = Object.fromEntries(
+    Object.keys(tags).map(k => {
+      const v: { [k: string]: any } = {}
+      v.type = _.startsWith(_.snakeCase(k), 'is_')
+        ? 'boolean'
+        : pluralize.isPlural(_.last(_.words(k)) as string)
+        ? 'array'
+        : 'string'
+      v.title = _.startCase(k)
+
+      if (_.endsWith(k, 'Date')) {
+        v.format = 'date'
+      }
+
+      if (v.type === 'array') {
+        const key = pluralize.singular(_.last(_.words(k)) as string)
+
+        v['x-itemTitle'] = key
+        v.items = {
+          type: 'object',
+          required: [key],
+          properties: {
+            key: {
+              type: 'string',
+              title: `Inser ${key}...`,
+              'x-display': 'textare'
+            }
+          }
+        }
+      }
+
+      return [k, v]
+    })
+  )
+
   const schema = {
     type: 'object',
     required: [],
-    properties: {}
+    properties: properties
   }
+
+  console.log(schema)
+
+  return schema
 }
